@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 py-5">
+    <div class="row g-4">
+        <div class="col-md-7">
+            <div class="p-4 rounded-0 bg-dark bg-opacity-50 border border-secondary border-opacity-25 shadow">
+                <h3 class="fw-bold text-warning mb-4"><i class="fa-solid fa-crown me-2"></i>تفاصيل التوصيل الفاخر في زفتى</h3>
+                <form action="{{ url_for('checkout') }}" method="POST" onsubmit="clearCart()">
+                    <input type="hidden" name="cart_data" id="cart_data_input">
+                    <input type="hidden" name="total" id="total_input">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">اسم المستلم الكريم</label>
+                        <input type="text" name="name" class="form-control form-control-lg text-white" placeholder="اكتب الاسم الكامل هنا" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">رقم الهاتف (لتأكيد رتبة التوصيل)</label>
+                        <input type="tel" name="phone" class="form-control form-control-lg" placeholder="01xxxxxxxxx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">العنوان التفصيلي في زفتى</label>
+                        <textarea name="address" class="form-control form-control-lg" rows="3" placeholder="المنطقة، الشارع، علامة مميزة فخمة بجوارك" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted">خيار الدفع المعتمد</label>
+                        <input type="text" class="form-control form-control-lg text-warning fw-bold bg-dark" value="💵 كاش يد بيد عند الاستلام (Premium Delivery)" readonly>
+                    </div>
+                    <button type="submit" class="btn btn-gold-luxury w-100 py-3 mt-4">إرسال أوردرك الملكي الآن</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="p-4 rounded-0 bg-dark bg-opacity-25 border border-secondary border-opacity-25 shadow">
+                <h4 class="fw-bold text-white mb-4">الفاتورة التقديرية</h4>
+                <ul class="list-group list-group-flush bg-transparent" id="summary-list">
+                    <!-- تعبئة بـ JS -->
+                </ul>
+                <div class="d-flex justify-content-between fw-bold fs-4 p-3 mt-3 bg-dark border border-warning border-opacity-25 text-warning">
+                    <span>المجموع الإجمالي:</span>
+                    <span id="summary-total">0 EGP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid my-5 px-4" style="max-width: 1400px;">
+    <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap border-bottom border-warning pb-3">
+        <h2 class="fw-bold text-white"><i class="fa-solid fa-fire text-warning me-3"></i>Tasty Lounge Kitchen</h2>
+        <div id="status-badge" class="bg-black border border-warning px-4 py-2 text-warning fs-5 fw-bold shadow-lg">
+            أوردرات النشطة: <span id="order-count" class="text-white">{{ orders|length }}</span>
+        </div>
+    </div>
+
+    <div class="row g-4" id="orders-container">
+        {% for order in orders %}
+        <div class="col-md-6 col-lg-4 order-card" data-id="{{ order.id }}">
+            <div class="card bg-dark text-white rounded-0 border {% if order.status == 'Pending' %}border-danger shadow-sm{% else %}border-primary{% endif %} h-100">
+                <div class="card-header bg-black d-flex justify-content-between align-items-center py-3">
+                    <span class="fw-bold text-warning">طلب #{{ order.id }}</span>
+                    <small class="text-muted">{{ order.order_date.strftime('%H:%M') }}</small>
+                </div>
+                
+                <div class="card-body">
+                    <div class="mb-3 bg-black p-3 border-start border-warning border-4">
+                        <h6 class="text-warning mb-1">{{ order.customer_name }}</h6>
+                        <p class="mb-0"><i class="fa-solid fa-phone me-2"></i>{{ order.customer_phone }}</p>
+                    </div>
+
+                    <div class="p-3 bg-secondary bg-opacity-10 mb-3 fs-5 text-light">
+                        {{ order.order_details }}
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 text-warning fw-bold">
+                        <span>الإجمالي:</span>
+                        <span>{{ order.total_price }} EGP</span>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-black border-top-0 p-3">
+                    {% if order.status == 'Pending' %}
+                        <a href="{{ url_for('update_order', order_id=order.id, new_status='Preparing') }}" class="btn btn-warning w-100 fw-bold">
+                            <i class="fa-solid fa-utensils me-2"></i>جاري التحضير
+                        </a>
+                    {% else %}
+                        <div class="row g-2">
+                            <div class="col-6"><a href="{{ url_for('update_order', order_id=order.id, new_status='Out for Delivery') }}" class="btn btn-outline-info w-100">للشحن</a></div>
+                            <div class="col-6"><a href="{{ url_for('update_order', order_id=order.id, new_status='Delivered') }}" class="btn btn-success w-100">تم التسليم</a></div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // 1. تحديث الصفحة كل 20 ثانية بهدوء
+    setInterval(function(){ 
+        fetch(window.location.href)
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newOrders = doc.getElementById('orders-container').innerHTML;
+            const currentOrders = document.getElementById('orders-container').innerHTML;
+            
+            if(newOrders !== currentOrders) {
+                document.getElementById('orders-container').innerHTML = newOrders;
+                // تنبيه صوتي بسيط عند وصول طلب جديد
+                new Audio('https://actions.google.com/sounds/v1/notifications/beep_short.ogg').play();
+            }
+        });
+    }, 20000);
+</script>
+
+<style>
+    /* لمسة جمالية للـ Dashboard */
+    .btn-warning { background: #c5a059; border: none; color: white; }
+    .btn-warning:hover { background: #d4af37; }
+    .order-card { transition: all 0.5s ease; }
+    .order-card:hover { transform: scale(1.02); }
+</style>
+{% endblock %}

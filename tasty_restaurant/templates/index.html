@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dahan-header-nav">
+    <div class="container">
+        <div class="dahan-filter-bar py-2">
+            <button class="btn btn-dahan-filter active" data-filter="all">
+                <i class="fa-solid fa-layer-group me-2"></i> جميع المأكولات الملكية
+            </button>
+            <button class="btn btn-dahan-filter" data-filter="all-crepes">
+                <i class="fa-solid fa-scroll me-2"></i> ركن الكريبات الفاخرة
+            </button>
+            <button class="btn btn-dahan-filter" data-filter="sandwiches">
+                <i class="fa-solid fa-burger me-2"></i> السندوتشات والسناكس السريعة
+            </button>
+            <button class="btn btn-dahan-filter" data-filter="sweet">
+                <i class="fa-solid fa-ice-cream me-2"></i> قسم كريبات الحلو والتحلية
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container welcome-section text-center">
+    <div class="welcome-badge mb-2">TASTY RESTAURANT PREMIUM SYSTEM</div>
+    <h2>تذوق الفخامة في فرعنا الوحيد بزفتى ✨</h2>
+    <p class="text-muted mx-auto lh-lg" style="max-width: 650px; font-size: 0.92rem;">
+        نحن لا نطهو الطعام فقط؛ نحن نصنع تجارب سياحية عريقة تليق بكم في مدينة زفتى. جميع الوجبات يتم تحضيرها فور طلبها باستخدام مكونات طازجة 100% وتحت رقابة صارمة من خبراء الجودة.
+    </p>
+</div>
+
+<div class="container my-4">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4" id="menu-grid">
+        
+        {% for item in chicken %}
+        <div class="col menu-item-card animate-fade-in" data-category="all-crepes">
+            <div class="dahan-food-card">
+                <div class="dahan-img-box">
+                    {% if loop.index % 4 == 1 %}
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% elif loop.index % 4 == 2 %}
+                        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% elif loop.index % 4 == 3 %}
+                        <img src="https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1598103442097-8b74394b98c6?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% endif %}
+                </div>
+                <div class="dahan-body-box">
+                    <h6 class="dahan-title">{{ item.name }}</h6>
+                    <p class="dahan-text">{{ item.description }}</p>
+                    <div class="dahan-footer-box">
+                        <div class="dahan-price-wrapper">
+                            <span class="price-discount">{{ item.price }} <span class="curr">EGP</span></span>
+                        </div>
+                        <button class="btn btn-dahan-add add-to-cart-btn" 
+                                data-id="{{ item.id }}" 
+                                data-name="{{ item.name }}" 
+                                data-price="{{ item.price }}">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% for item in meat %}
+        <div class="col menu-item-card animate-fade-in" 
+             data-category="{% if 'ساندوتش' in item.name or 'بطاطس' in item.name or 'سناكس' in item.name %}sandwiches{% else %}all-crepes{% endif %}">
+            <div class="dahan-food-card">
+                <div class="dahan-img-box">
+                    {% if 'ساندوتش' in item.name %}
+                        {% if loop.index % 3 == 0 %}
+                            <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                        {% elif loop.index % 3 == 1 %}
+                            <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc3?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                        {% endif %}
+                    {% elif 'بطاطس' in item.name or 'سناكس' in item.name %}
+                        <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% else %}
+                        {% if loop.index % 3 == 0 %}
+                            <img src="https://images.unsplash.com/photo-1621996346565-e3bb64e0be5e?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                        {% elif loop.index % 3 == 1 %}
+                            <img src="https://images.unsplash.com/photo-1603052875302-d376b7c0638a?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="dahan-body-box">
+                    <h6 class="dahan-title">{{ item.name }}</h6>
+                    <p class="dahan-text">{{ item.description }}</p>
+                    <div class="dahan-footer-box">
+                        <div class="dahan-price-wrapper">
+                            <span class="price-discount">{{ item.price }} <span class="curr">EGP</span></span>
+                        </div>
+                        <button class="btn btn-dahan-add add-to-cart-btn" 
+                                data-id="{{ item.id }}" 
+                                data-name="{{ item.name }}" 
+                                data-price="{{ item.price }}">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% for item in sweet %}
+        <div class="col menu-item-card animate-fade-in" data-category="sweet">
+            <div class="dahan-food-card">
+                <div class="dahan-img-box">
+                    {% if loop.index % 3 == 1 %}
+                        <img src="https://images.unsplash.com/photo-1571066811602-71683a3f680d?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% elif loop.index % 3 == 2 %}
+                        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?q=80&w=400" alt="{{ item.name }}" loading="lazy">
+                    {% endif %}
+                </div>
+                <div class="dahan-body-box">
+                    <h6 class="dahan-title">{{ item.name }}</h6>
+                    <p class="dahan-text">{{ item.description }}</p>
+                    <div class="dahan-footer-box">
+                        <div class="dahan-price-wrapper">
+                            <span class="price-discount">{{ item.price }} <span class="curr">EGP</span></span>
+                        </div>
+                        <button class="btn btn-dahan-add add-to-cart-btn" 
+                                data-id="{{ item.id }}" 
+                                data-name="{{ item.name }}" 
+                                data-price="{{ item.price }}">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-3 px-4 bg-light">
+                <h5 class="modal-title fw-bold text-dark" id="cartModalLabel">
+                    <i class="fa-solid fa-cart-shopping text-warning me-2"></i> مراجعة سلة الطلبات الحالية
+                </h5>
+                <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-white">
+                <div id="cart-items-list" class="text-dark custom-cart-scroll">
+                    <div class="text-center text-muted py-4">
+                        <i class="fa-solid fa-basket-shopping fs-1 d-block mb-3 text-black-50"></i>
+                        سلتك فارغة تماماً حالياً.. تصفح المنيو وأضف وجباتك المفضلة!
+                    </div>
+                </div>
+                
+                <div class="price-summary-box mt-4 pt-3 border-top">
+                    <div class="d-flex justify-content-between fs-6 text-muted mb-2">
+                        <span>المجموع الفرعي للوجبات:</span>
+                        <span id="cart-subtotal-price" class="fw-bold">0 EGP</span>
+                    </div>
+                    <div class="d-flex justify-content-between fs-6 text-muted mb-2">
+                        <span>ضريبة القيمة المضافة ومصاريف التغليف:</span>
+                        <span class="text-success fw-bold">مجاناً بالكامل ✨</span>
+                    </div>
+                    <div class="d-flex justify-content-between fs-5 fw-bold mt-2 pt-2 border-top-dashed">
+                        <span class="text-dark">الحساب الإجمالي المستحق:</span>
+                        <span id="cart-total-price" style="color: var(--dahan-orange); font-weight: 900;">0 EGP</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light p-3 border-0">
+                <button type="button" class="btn btn-outline-secondary rounded-2 px-4 py-2 small" data-bs-dismiss="modal">العودة للمنيو</button>
+                <button type="button" id="checkout-btn" class="btn btn-dahan-checkout disabled px-4 py-2" data-bs-toggle="modal" data-bs-target="#shippingModal">
+                    تأكيد البيانات واتمام الطلب <i class="fa-solid fa-chevron-left ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="shippingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header py-3 px-4 bg-light">
+                <h5 class="modal-title fw-bold text-dark">
+                    <i class="fa-solid fa-truck-fast text-warning me-2"></i> بيانات الشحن والتوصيل لـ زفتى
+                </h5>
+                <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="orderForm">
+                <div class="modal-body p-4 bg-white text-right">
+                    <div class="mb-3">
+                        <label class="form-label">اسم العميل بالكامل</label>
+                        <input type="text" id="customer-name" class="form-control" placeholder="اكتب اسمك الثنائي على الأقل" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">رقم الموبايل (المتصل بالواتساب)</label>
+                        <input type="tel" id="customer-phone" class="form-control" placeholder="01xxxxxxxxx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">العنوان بالتفصيل داخل زفتى</label>
+                        <input type="text" id="customer-address" class="form-control" placeholder="اسم الشارع، رقم المنزل، أو علامة مميزة" required>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">ملاحظات خاصة بالطلب (اختياري)</label>
+                        <textarea id="customer-notes" class="form-control" rows="2" placeholder="بدون كاتشب، زيادة جبنة، إلخ..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3 border-0">
+                    <button type="button" class="btn btn-outline-secondary rounded-2 px-4 py-2 small" data-bs-toggle="modal" data-bs-target="#cartModal">تعديل السلة</button>
+                    <button type="submit" class="btn btn-success px-4 py-2 fw-bold">
+                        إرسال الطلب للمطعم <i class="fa-brands fa-whatsapp ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.btn-dahan-filter');
+    const menuItems = document.querySelectorAll('.menu-item-card');
+    const menuGrid = document.getElementById('menu-grid');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            const filterValue = this.getAttribute('data-filter');
+
+            menuGrid.style.opacity = '0.3';
+            menuGrid.style.transform = 'translateY(5px)';
+            menuGrid.style.transition = 'all 0.15s ease-in-out';
+
+            setTimeout(() => {
+                menuItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (filterValue === 'all' || itemCategory === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                menuGrid.style.opacity = '1';
+                menuGrid.style.transform = 'translateY(0)';
+            }, 160);
+        });
+    });
+});
+</script>
+{% endblock %}
